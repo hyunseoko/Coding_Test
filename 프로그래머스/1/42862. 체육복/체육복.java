@@ -1,47 +1,37 @@
+import java.util.*;
+
 class Solution {
     public int solution(int n, int[] lost, int[] reserve) {
-        int answer = 0;
-        int[] stu = new int[n+1];
-        for (int i=1; i<=n; i++){
-            stu[i] = 1;
-        }
-        for (int i=0; i<lost.length; i++){
-            stu[lost[i]]--;
-        }
-        for (int i=0; i<reserve.length; i++){
-            stu[reserve[i]]++;
-        }
-        for (int i=1; i<=n; i++){
-            if (stu[i] >= 1) answer++;
-            else if (stu[i] == 0) {
-                if (i != 1 && i != n) {
-                    if (stu[i-1] == 2) {
-                        stu[i-1]--;
-                        stu[i]++;
-                        answer++;
-                    }
-                    else if (stu[i+1] == 2) {
-                        stu[i+1]--;
-                        stu[i]++;
-                        answer++;
-                    }
-                }
-                else if (i == 1){
-                    if (stu[i+1] == 2) {
-                        stu[i+1]--;
-                        stu[i]++;
-                        answer++;
-                    }
-                }
-                else if (i == n) {
-                    if (stu[i-1] == 2) {
-                        stu[i-1]--;
-                        stu[i]++;
-                        answer++;
-                    }
+        int answer = n - lost.length;
+        
+        Arrays.sort(lost);
+        Arrays.sort(reserve);
+        
+        boolean[] used = new boolean[reserve.length];
+        for (int i=0; i<lost.length; i++) {
+            for (int j=0; j<reserve.length; j++) {
+                if (!used[j] && lost[i] == reserve[j]) {
+                    answer++;
+                    used[j] = true;
+                    lost[i] = -1;
+                    break;
                 }
             }
         }
+        
+        for (int i=0; i<lost.length; i++) {
+            if (lost[i] == -1) continue;
+            
+            for (int j=0; j<reserve.length; j++) {
+                if (!used[j] && (reserve[j] == lost[i] - 1 
+                                 || reserve[j] == lost[i] + 1)) {
+                    answer++;
+                    used[j] = true;
+                    break;
+                }
+            }
+        }
+        
         return answer;
     }
 }
