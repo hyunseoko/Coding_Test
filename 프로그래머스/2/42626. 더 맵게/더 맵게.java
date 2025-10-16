@@ -2,22 +2,15 @@ import java.util.*;
 
 class Solution {
     public int solution(int[] scoville, int K) {
-        PriorityQueue<Long> pq = new PriorityQueue<>();
-        for (int s : scoville) pq.add((long)s);
+         PriorityQueue<Integer> pq = new PriorityQueue<>();
+         for (int s: scoville) pq.add(s);
 
-        if (!pq.isEmpty() && pq.peek() >= K) return 0;
+         int cnt = 0;
+         while (pq.size() > 1 && pq.peek() < K) {
+             pq.add(pq.remove() + pq.remove() * 2);
+             cnt++;
+         }
 
-        int mixes = 0;
-        while (pq.size() >= 2 && pq.peek() < K) {
-            long a = pq.poll();
-            long b = pq.poll();
-            long mixed = a + 2L * b;
-            pq.add(mixed);
-            mixes++;
-        }
-        
-        int answer = (pq.peek() != null && pq.peek() >= K) ? mixes : -1;
-
-        return answer;
+         return pq.peek() >= K ? cnt : -1;
     }
 }
