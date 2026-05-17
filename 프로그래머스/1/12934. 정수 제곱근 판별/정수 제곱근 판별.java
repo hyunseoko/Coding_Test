@@ -1,14 +1,9 @@
 class Solution {
     public long solution(long n) {
-        long answer = -1;
+        long x = (long) Math.sqrt(n);
         
-        for (long i = 1; i * i <= n; i++) {
-            if (i * i == n) {
-                answer = (i + 1) * (i + 1);
-                break;
-            }
-        }
-        
-        return answer;
+        if (x * x == n) return (x + 1) * (x + 1);
+
+        return -1;
     }
 }
