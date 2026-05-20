@@ -21,26 +21,8 @@ class Solution {
         
         int min = poss / 60;
         int sec = poss % 60;
-        
-        String answer = "";
-        
-        if (min < 10) {
-            answer += "0";
-            answer += String.valueOf(min);
-        } else {
-            answer += String.valueOf(min);
-        }
-        
-        answer += ":";
-        
-        if (sec < 10) {
-            answer += "0";
-            answer += String.valueOf(sec);
-        } else {
-            answer += String.valueOf(sec);
-        }
-        
-        return answer;
+
+        return String.format("%02d:%02d", min, sec);
     }
     
     public int toSecond(String time) {
