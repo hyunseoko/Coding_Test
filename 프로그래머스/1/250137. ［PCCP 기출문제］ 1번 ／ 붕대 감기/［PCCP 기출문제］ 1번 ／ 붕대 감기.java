@@ -1,18 +1,24 @@
 class Solution {
     public int solution(int[] bandage, int health, int[][] attacks) {
         int cur_health = health;
+        int n = attacks.length;
         int seq = 0;
-        int prevTime = 0;
+        int idx = 0;
         
-        for (int i = 0; i < attacks.length; i++) {
-            int attackTime = attacks[i][0];
-            int damage = attacks[i][1];
-            int healTime = attackTime - prevTime - 1;
+        for (int i = 1; i <= attacks[n - 1][0]; i++) {
+            // 공격
+            if (idx < n && i == attacks[idx][0]) {
+                cur_health -= attacks[idx][1];
+                seq = 0;
+                idx++;
                 
-            for (int j = 0; j < healTime; j++) {
+                if (cur_health <= 0) return -1;
+            }
+            // 회복
+            else {
                 cur_health += bandage[1];
                 seq++;
-                 
+                
                 if (seq == bandage[0]) {
                     cur_health += bandage[2];
                     seq = 0;
@@ -20,16 +26,8 @@ class Solution {
                 if (cur_health > health) cur_health = health;
             }
             
-            cur_health -= damage;
-            seq = 0;
-              
-            if (cur_health <= 0) {
-                return -1;
-            }
-            
-            prevTime = attackTime;        
         }
         
-        return cur_health;    
+        return cur_health;
     }
 }
