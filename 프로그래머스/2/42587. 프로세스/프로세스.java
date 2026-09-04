@@ -1,30 +1,33 @@
 import java.util.*;
+
 class Solution {
     public int solution(int[] priorities, int location) {
-        int answer = 0;
-        int maxPro = priorities[0];
-        Queue<int[]> queue = new LinkedList<>();
-        for (int i=0; i<priorities.length; i++){
-            queue.add(new int[]{priorities[i], i});
-            if (maxPro < priorities[i]) maxPro = priorities[i];
+        Queue<int[]> queue = new ArrayDeque<>();
+        int[] count = new int[10];
+        
+        for (int i = 0; i < priorities.length; i++) {
+            queue.offer(new int[]{priorities[i], i});
+            count[priorities[i]]++;
         }
-        while (true){
-            int[] current = queue.poll();
-            if (maxPro == current[0]){
-                maxPro = 0;
-                for (int[] q : queue){
-                    if (q[0] > maxPro) maxPro = q[0];
-                }
-                answer++;
-                if (location == current[1]) {
-                    break;
-                }
-            }
+        
+        int max = 9;
+        while (max > 0 && count[max] == 0) max--;
+        
+        int order = 0;
+        while (!queue.isEmpty()) {
+            int[] cur = queue.poll();
+            
+            if (cur[0] < max) queue.offer(cur);
             else {
-                queue.add(current);
+                order++;
+                count[cur[0]]--;
+                
+                if (cur[1] == location) break;
+                
+                while (max > 0 && count[max] == 0) max--;
             }
         }
         
-        return answer;
+        return order;
     }
 }
